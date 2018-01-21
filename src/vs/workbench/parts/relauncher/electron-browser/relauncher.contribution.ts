@@ -31,6 +31,7 @@ export class SettingsChangeRelauncher implements IWorkbenchContribution {
 	private toDispose: IDisposable[] = [];
 
 	private titleBarStyle: 'native' | 'custom';
+	private transparency: 'none' | 'blur' | 'fluent' | 'transparent' | 'vibrancy-appearance-based' | 'vibrancy-light' | 'vibrancy-dark' | 'vibrancy-titlebar' | 'vibrancy-medium-light' | 'vibrancy-ultra-dark';
 	private nativeTabs: boolean;
 	private updateChannel: string;
 	private enableCrashReporter: boolean;
@@ -70,6 +71,12 @@ export class SettingsChangeRelauncher implements IWorkbenchContribution {
 		// Titlebar style
 		if (config.window && config.window.titleBarStyle !== this.titleBarStyle && (config.window.titleBarStyle === 'native' || config.window.titleBarStyle === 'custom')) {
 			this.titleBarStyle = config.window.titleBarStyle;
+			changed = true;
+		}
+
+		// Transparency effect
+		if (config.window && config.window.transparency !== this.transparency) {
+			this.transparency = config.window.transparency;
 			changed = true;
 		}
 

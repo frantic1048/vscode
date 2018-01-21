@@ -222,6 +222,7 @@ export interface IWindowSettings {
 	restoreFullscreen: boolean;
 	zoomLevel: number;
 	titleBarStyle: 'native' | 'custom';
+	transparency: 'none' | 'blur' | 'fluent' | 'transparent' | 'vibrancy-appearance-based' | 'vibrancy-light' | 'vibrancy-dark' | 'vibrancy-titlebar' | 'vibrancy-medium-light' | 'vibrancy-ultra-dark';
 	autoDetectHighContrast: boolean;
 	menuBarVisibility: MenuBarVisibility;
 	newWindowDimensions: 'default' | 'inherit' | 'maximized' | 'fullscreen';

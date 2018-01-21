@@ -11,6 +11,7 @@ import nls = require('vs/nls');
 import URI from 'vs/base/common/uri';
 import { IStateService } from 'vs/platform/state/common/state';
 import { shell, screen, BrowserWindow, systemPreferences, app, TouchBar, nativeImage } from 'electron';
+import { SetWindowCompositionAttribute, AccentState } from 'windows-swca';
 import { TPromise, TValueCallback } from 'vs/base/common/winjs.base';
 import { IEnvironmentService, ParsedArgs } from 'vs/platform/environment/common/environment';
 import { ILogService } from 'vs/platform/log/common/log';
@@ -140,9 +141,23 @@ export class CodeWindow implements ICodeWindow {
 		// in case we are maximized or fullscreen, only show later after the call to maximize/fullscreen (see below)
 		const isFullscreenOrMaximized = (this.windowState.mode === WindowMode.Maximized || this.windowState.mode === WindowMode.Fullscreen);
 
+		const windowConfig = this.configurationService.getValue<IWindowSettings>('window');
+
+		// not enabled when developing on Mac due to https://github.com/electron/electron/issues/3647
+		let useCustomTitleStyle = (!isMacintosh && windowConfig && windowConfig.titleBarStyle === 'custom') ||
+			(isMacintosh && (!windowConfig || !windowConfig.titleBarStyle || windowConfig.titleBarStyle === 'custom') && (!this.environmentService.isBuilt || !config.extensionDevelopmentPath));
+
 		let backgroundColor = this.getBackgroundColor();
+		let vibrancy: any; // Bypass type checking
 		if (isMacintosh && backgroundColor.toUpperCase() === CodeWindow.DEFAULT_BG_DARK) {
 			backgroundColor = '#171717'; // https://github.com/electron/electron/issues/5150
+		}
+		if (isWindows && windowConfig && windowConfig.transparency !== 'none' && windowConfig.transparency.indexOf('vibrancy-') === -1 && useCustomTitleStyle) {
+			backgroundColor = '#00000000';
+		}
+		if (isMacintosh && windowConfig && windowConfig.transparency !== 'none' && windowConfig.transparency.indexOf('vibrancy-') !== -1) {
+			backgroundColor = '#00000000';
+			vibrancy = windowConfig.transparency.substring(8);
 		}
 
 		const options: Electron.BrowserWindowConstructorOptions = {
@@ -151,6 +166,7 @@ export class CodeWindow implements ICodeWindow {
 			x: this.windowState.x,
 			y: this.windowState.y,
 			backgroundColor,
+			vibrancy,
 			minWidth: CodeWindow.MIN_WIDTH,
 			minHeight: CodeWindow.MIN_HEIGHT,
 			show: !isFullscreenOrMaximized,
@@ -165,21 +181,10 @@ export class CodeWindow implements ICodeWindow {
 			options.icon = path.join(this.environmentService.appRoot, 'resources/linux/code.png'); // Windows and Mac are better off using the embedded icon(s)
 		}
 
-		const windowConfig = this.configurationService.getValue<IWindowSettings>('window');
-
 		let useNativeTabs = false;
 		if (windowConfig && windowConfig.nativeTabs) {
 			options.tabbingIdentifier = product.nameShort; // this opts in to sierra tabs
 			useNativeTabs = true;
-		}
-
-		let useCustomTitleStyle = false;
-		if ((!isMacintosh && windowConfig && windowConfig.titleBarStyle === 'custom') ||
-			(isMacintosh && (!windowConfig || !windowConfig.titleBarStyle || windowConfig.titleBarStyle === 'custom'))) {
-			const isDev = !this.environmentService.isBuilt || !!config.extensionDevelopmentPath;
-			if (!isMacintosh || !isDev) {
-				useCustomTitleStyle = true; // not enabled when developing due to https://github.com/electron/electron/issues/3647
-			}
 		}
 
 		if (useNativeTabs) {
@@ -197,6 +202,26 @@ export class CodeWindow implements ICodeWindow {
 		// Create the browser window.
 		this._win = new BrowserWindow(options);
 		this._id = this._win.id;
+
+		if (isWindows && windowConfig && windowConfig.transparency !== 'none' && windowConfig.transparency.indexOf('vibrancy-') === -1 && useCustomTitleStyle) {
+			let accentState: AccentState;
+
+			switch (windowConfig.transparency) {
+				case 'fluent':
+					accentState = AccentState.ACCENT_ENABLE_FLUENT;
+					break;
+
+				case 'blur':
+					accentState = AccentState.ACCENT_ENABLE_BLURBEHIND;
+					break;
+
+				case 'transparent':
+					accentState = AccentState.ACCENT_ENABLE_TRANSPARENTGRADIENT;
+					break;
+			}
+			// Possible glitching with a fully transparent color, so use the minimum possible transparency.
+			SetWindowCompositionAttribute(this._win, accentState, 0x01000000);
+		}
 
 		// Bug in Electron (https://github.com/electron/electron/issues/10862). On multi-monitor setups,
 		// it can happen that the position we set to the window is not the correct one on the display.

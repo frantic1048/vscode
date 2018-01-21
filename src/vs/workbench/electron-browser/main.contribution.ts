@@ -385,6 +385,25 @@ configurationRegistry.registerConfiguration({
 			'default': false,
 			'description': nls.localize('window.nativeTabs', "Enables macOS Sierra window tabs. Note that changes require a full restart to apply and that native tabs will disable a custom title bar style if configured."),
 			'included': isMacintosh && parseFloat(os.release()) >= 16 // Minimum: macOS Sierra (10.12.x = darwin 16.x)
+		},
+		'window.transparency': {
+			'type': 'string',
+			'enum': ['none', 'blur', 'fluent', 'transparent', 'vibrancy-appearance-based', 'vibrancy-light', 'vibrancy-dark', 'vibrancy-titlebar', 'vibrancy-medium-light', 'vibrancy-ultra-dark'],
+			'enumDescriptions': [
+				nls.localize('window.transparency.none', "No transparency effect."),
+				nls.localize('window.transparency.blur', "Simple blur effect."),
+				nls.localize('window.transparency.fluent', "Fluent design transparency effect, high blur radius and grain effect."),
+				nls.localize('window.transparency.transparent', "Simple transparency, no effect."),
+				nls.localize('window.transparency.vibrancy-appearance-based', "Vibrancy based on appearance."),
+				nls.localize('window.transparency.vibrancy-light', "Bright-colored vibrancy."),
+				nls.localize('window.transparency.vibrancy-dark', "Dark-colored vibrancy."),
+				nls.localize('window.transparency.vibrancy-titlebar', "Vibrant titlebar."),
+				nls.localize('window.transparency.vibrancy-medium-light', "Slightly bright vibrancy."),
+				nls.localize('window.transparency.vibrancy-ultra-dark', "Extremely dark vibrancy.")
+			],
+			'default': 'none',
+			'description': nls.localize('window.transparency', "Transparency effect. Note that vibrancy-* effects are only on macOS, where the 3 others are for Windows. Requires the custom titlebar to be active on Windows."),
+			'included': (isMacintosh && parseFloat(os.release()) >= 14) || (isWindows && parseFloat(os.release()) >= 10) // Minimum: macOS Yosemite (10.10.x = darwin 14.0) or Windows 10
 		}
 	}
 });
