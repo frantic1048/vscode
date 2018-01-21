@@ -392,7 +392,7 @@ configurationRegistry.registerConfiguration({
 			'enumDescriptions': [
 				nls.localize('window.transparency.none', "No transparency effect."),
 				nls.localize('window.transparency.blur', "Simple blur effect."),
-				nls.localize('window.transparency.fluent', "Fluent design transparency effect, high blur radius and grain effect."),
+				nls.localize('window.transparency.fluent', "Fluent design transparency effect, high blur radius and grain effect. Only available on Windows Insider builds >= 17063, a bit buggy."),
 				nls.localize('window.transparency.transparent', "Simple transparency, no effect."),
 				nls.localize('window.transparency.vibrancy-appearance-based', "Vibrancy based on appearance."),
 				nls.localize('window.transparency.vibrancy-light', "Bright-colored vibrancy."),
