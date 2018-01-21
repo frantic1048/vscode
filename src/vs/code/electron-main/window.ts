@@ -145,7 +145,7 @@ export class CodeWindow implements ICodeWindow {
 
 		// not enabled when developing on Mac due to https://github.com/electron/electron/issues/3647
 		let useCustomTitleStyle = (!isMacintosh && windowConfig && windowConfig.titleBarStyle === 'custom') ||
-			(isMacintosh && (!windowConfig || !windowConfig.titleBarStyle || windowConfig.titleBarStyle === 'custom') && (!this.environmentService.isBuilt || !config.extensionDevelopmentPath));
+			(isMacintosh && (!windowConfig || !windowConfig.titleBarStyle || windowConfig.titleBarStyle === 'custom') && (!this.environmentService.isBuilt || !!config.extensionDevelopmentPath));
 
 		let backgroundColor = this.getBackgroundColor();
 		let vibrancy: any; // Bypass type checking
