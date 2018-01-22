@@ -128,6 +128,6 @@
     "windows-foreground-love": "0.1.0",
     "windows-mutex": "^0.2.0",
     "windows-process-tree": "0.1.6",
-    "windows-swca": "^1.0.1"
+    "windows-swca": "^1.1.0"
   }
 }
