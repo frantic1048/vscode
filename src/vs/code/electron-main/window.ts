@@ -614,7 +614,7 @@ export class CodeWindow implements ICodeWindow {
 
 		// Theme
 		windowConfiguration.baseTheme = this.getBaseTheme();
-		windowConfiguration.backgroundColor = windowConfig.transparency === 'none' ? this.getBackgroundColor() : 'transparent' ;
+		windowConfiguration.backgroundColor = (!windowConfig || windowConfig.transparency === 'none') ? this.getBackgroundColor() : 'transparent' ;
 		windowConfiguration.frameless = this.hasHiddenTitleBarStyle() && !isMacintosh;
 
 		// Perf Counters
