@@ -11,7 +11,6 @@ import nls = require('vs/nls');
 import URI from 'vs/base/common/uri';
 import { IStateService } from 'vs/platform/state/common/state';
 import { shell, screen, BrowserWindow, systemPreferences, app, TouchBar, nativeImage } from 'electron';
-import { SetWindowCompositionAttribute, AccentState } from 'windows-swca';
 import { TPromise, TValueCallback } from 'vs/base/common/winjs.base';
 import { IEnvironmentService, ParsedArgs } from 'vs/platform/environment/common/environment';
 import { ILogService } from 'vs/platform/log/common/log';
@@ -204,7 +203,8 @@ export class CodeWindow implements ICodeWindow {
 		this._id = this._win.id;
 
 		if (isWindows && windowConfig && windowConfig.transparency !== 'none' && windowConfig.transparency.indexOf('vibrancy-') === -1 && useCustomTitleStyle) {
-			let accentState: AccentState;
+			const { AccentState, SetWindowCompositionAttribute } = <any>require.__$__nodeRequire('windows-swca');
+			let accentState;
 
 			switch (windowConfig.transparency) {
 				case 'fluent':
