@@ -403,7 +403,7 @@ configurationRegistry.registerConfiguration({
 			],
 			'default': 'none',
 			'description': nls.localize('window.transparency', "Transparency effect. Note that vibrancy-* effects are only on macOS, where the 3 others are for Windows. Requires the custom titlebar to be active on Windows. Accepted values are 'none', 'blur', 'fluent', 'transparent', 'vibrancy-appearance-based', 'vibrancy-light', 'vibrancy-dark', 'vibrancy-titlebar', 'vibrancy-medium-light' and 'vibrancy-ultra-dark'."),
-			'included': (isMacintosh && parseFloat(os.release()) >= 14) || (isWindows && parseFloat(os.release()) >= 10) // Minimum: macOS Yosemite (10.10.x = darwin 14.0) or Windows 10
+			'included': (isMacintosh && parseFloat(os.release()) >= 14) || (isWindows && parseFloat(os.release()) >= 10) || isLinux// Minimum: macOS Yosemite (10.10.x = darwin 14.0) or Windows 10
 		}
 	}
 });

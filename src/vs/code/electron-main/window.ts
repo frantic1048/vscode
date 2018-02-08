@@ -148,6 +148,7 @@ export class CodeWindow implements ICodeWindow {
 
 		let backgroundColor = this.getBackgroundColor();
 		let vibrancy: any; // Bypass type checking
+		let transparent = false;
 		if (isMacintosh && backgroundColor.toUpperCase() === CodeWindow.DEFAULT_BG_DARK) {
 			backgroundColor = '#171717'; // https://github.com/electron/electron/issues/5150
 		}
@@ -158,6 +159,10 @@ export class CodeWindow implements ICodeWindow {
 			backgroundColor = '#00000000';
 			vibrancy = windowConfig.transparency.substring(8);
 		}
+		if (isLinux && windowConfig && windowConfig.transparency === 'transparent') {
+			backgroundColor = '#00000000';
+			transparent = true;
+		}
 
 		const options: Electron.BrowserWindowConstructorOptions = {
 			width: this.windowState.width,
@@ -166,6 +171,7 @@ export class CodeWindow implements ICodeWindow {
 			y: this.windowState.y,
 			backgroundColor,
 			vibrancy,
+			transparent,
 			minWidth: CodeWindow.MIN_WIDTH,
 			minHeight: CodeWindow.MIN_HEIGHT,
 			show: !isFullscreenOrMaximized,
@@ -614,7 +620,7 @@ export class CodeWindow implements ICodeWindow {
 
 		// Theme
 		windowConfiguration.baseTheme = this.getBaseTheme();
-		windowConfiguration.backgroundColor = (!windowConfig || windowConfig.transparency === 'none') ? this.getBackgroundColor() : 'transparent' ;
+		windowConfiguration.backgroundColor = (!windowConfig || windowConfig.transparency === 'none') ? this.getBackgroundColor() : 'transparent';
 		windowConfiguration.frameless = this.hasHiddenTitleBarStyle() && !isMacintosh;
 
 		// Perf Counters
