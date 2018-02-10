@@ -180,6 +180,23 @@ try {
 	console.error(err);
 }
 
+// Linux: disable GPU acceleration for transparency effect
+try {
+	if (process.platform === 'linux') {
+		let configFile = path.join(userData, 'User', 'settings.json');
+		if (fs.existsSync(configFile))
+		{
+			let config = JSON.parse(stripComments(fs.readFileSync(configFile, 'utf8')));
+			if (config['window.transparency'] && config['window.transparency'] === 'transparent') {
+				app.commandLine.appendSwitch('enable-transparent-visuals');
+				app.disableHardwareAcceleration();
+			}
+		}
+	}
+} catch (err) {
+	console.error(err);
+}
+
 // Mac: when someone drops a file to the not-yet running VSCode, the open-file event fires even before
 // the app-ready event. We listen very early for open-file and remember this upon startup as path to open.
 global.macOpenFiles = [];
