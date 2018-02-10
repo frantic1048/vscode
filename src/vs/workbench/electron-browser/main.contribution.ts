@@ -390,20 +390,20 @@ configurationRegistry.registerConfiguration({
 			'type': 'string',
 			'enum': ['none', 'blur', 'fluent', 'transparent', 'vibrancy-appearance-based', 'vibrancy-light', 'vibrancy-dark', 'vibrancy-titlebar', 'vibrancy-medium-light', 'vibrancy-ultra-dark'],
 			'enumDescriptions': [
-				nls.localize('window.transparency.none', "No transparency effect."),
-				nls.localize('window.transparency.blur', "Simple blur effect."),
-				nls.localize('window.transparency.fluent', "Fluent design transparency effect, high blur radius and grain effect. Only available on Windows Insider builds >= 17063, a bit buggy."),
-				nls.localize('window.transparency.transparent', "Simple transparency, no effect."),
-				nls.localize('window.transparency.vibrancy-appearance-based', "Vibrancy based on appearance."),
-				nls.localize('window.transparency.vibrancy-light', "Bright-colored vibrancy."),
-				nls.localize('window.transparency.vibrancy-dark', "Dark-colored vibrancy."),
-				nls.localize('window.transparency.vibrancy-titlebar', "Vibrant titlebar."),
-				nls.localize('window.transparency.vibrancy-medium-light', "Slightly bright vibrancy."),
-				nls.localize('window.transparency.vibrancy-ultra-dark', "Extremely dark vibrancy.")
+				nls.localize('window.transparency.none', "No transparency effect. Available on all platforms."),
+				nls.localize('window.transparency.blur', "Simple blur effect. Only available on Windows and requires the custom titlebar to be active."),
+				nls.localize('window.transparency.fluent', "Fluent design transparency effect, high blur radius and grain effect. Only available on Windows Insider builds >= 17063 and requires the custom titlebar to be active. A bit buggy."),
+				nls.localize('window.transparency.transparent', "Simple transparency, no effect. Only available on Windows and Linux. Requires the custom titlebar to be active on Windows. Disables hardware acceleration on Linux."),
+				nls.localize('window.transparency.vibrancy-appearance-based', "Vibrancy based on appearance. Only available on macOS."),
+				nls.localize('window.transparency.vibrancy-light', "Bright-colored vibrancy. Only available on macOS."),
+				nls.localize('window.transparency.vibrancy-dark', "Dark-colored vibrancy. Only available on macOS."),
+				nls.localize('window.transparency.vibrancy-titlebar', "Vibrant titlebar. Only available on macOS."),
+				nls.localize('window.transparency.vibrancy-medium-light', "Slightly bright vibrancy. Only available on macOS."),
+				nls.localize('window.transparency.vibrancy-ultra-dark', "Extremely dark vibrancy. Only available on macOS.")
 			],
 			'default': 'none',
-			'description': nls.localize('window.transparency', "Transparency effect. Note that vibrancy-* effects are only on macOS, where the 3 others are for Windows. Requires the custom titlebar to be active on Windows. Accepted values are 'none', 'blur', 'fluent', 'transparent', 'vibrancy-appearance-based', 'vibrancy-light', 'vibrancy-dark', 'vibrancy-titlebar', 'vibrancy-medium-light' and 'vibrancy-ultra-dark'."),
-			'included': (isMacintosh && parseFloat(os.release()) >= 14) || (isWindows && parseFloat(os.release()) >= 10) || isLinux// Minimum: macOS Yosemite (10.10.x = darwin 14.0) or Windows 10
+			'description': nls.localize('window.transparency', "Transparency effect. Accepted values are 'none', 'blur', 'fluent', 'transparent', 'vibrancy-appearance-based', 'vibrancy-light', 'vibrancy-dark', 'vibrancy-titlebar', 'vibrancy-medium-light' and 'vibrancy-ultra-dark'."),
+			'included': (isMacintosh && parseFloat(os.release()) >= 14) || (isWindows && parseFloat(os.release()) >= 10) || isLinux // Minimum: macOS Yosemite (10.10.x = darwin 14.0) or Windows 10
 		}
 	}
 });
