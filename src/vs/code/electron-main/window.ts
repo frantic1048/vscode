@@ -155,7 +155,7 @@ export class CodeWindow implements ICodeWindow {
 		if (isWindows && windowConfig && windowConfig.transparency !== 'none' && windowConfig.transparency.indexOf('vibrancy-') === -1 && useCustomTitleStyle) {
 			backgroundColor = '#00000000';
 		}
-		if (isMacintosh && windowConfig && windowConfig.transparency !== 'none' && windowConfig.transparency.indexOf('vibrancy-') !== -1) {
+		if (isMacintosh && windowConfig && windowConfig.transparency.indexOf('vibrancy-') === 0) {
 			backgroundColor = '#00000000';
 			vibrancy = windowConfig.transparency.substring(8);
 		}
